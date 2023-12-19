@@ -14,6 +14,14 @@ const MyContacts = () => {
   const contacts = useSelector(state => state.contacts);
   const filter = useSelector(state => state.filters);
 
+
+  useEffect(() => {
+      const savedContacts = localStorage.getItem('contacts');
+      if (savedContacts) {
+        dispatch(saveContact(JSON.parse(savedContacts)));
+      }
+  }, [dispatch]);
+
   useEffect(() => {
     localStorage.setItem('contacts', JSON.stringify(contacts));
   }, [contacts]);
