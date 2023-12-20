@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { saveContact, deleteContact } from '../../redux/contacts';
+import { saveContact, deleteContact, loadContacts } from '../../redux/contacts';
 import { setFilter } from '../../redux/filters';
 import MyContactForm from '../MyContactForm/MyContactForm';
 import MyContactList from '../ContactList/ContactList';
@@ -13,18 +13,23 @@ const MyContacts = () => {
   const dispatch = useDispatch();
   const contacts = useSelector(state => state.contacts);
   const filter = useSelector(state => state.filters);
-
+const [dataLoaded, setDataLoaded] = useState(false);
 
   useEffect(() => {
       const savedContacts = localStorage.getItem('contacts');
       if (savedContacts) {
-        dispatch(saveContact(JSON.parse(savedContacts)));
+        dispatch(loadContacts(JSON.parse(savedContacts)));
+        setDataLoaded(true);
       }
   }, [dispatch]);
 
   useEffect(() => {
     localStorage.setItem('contacts', JSON.stringify(contacts));
   }, [contacts]);
+
+   if (!dataLoaded) {
+     return null; 
+   }
 
   const addContact = ({ name, number }) => {
     if (isDuplicate(name)) {
