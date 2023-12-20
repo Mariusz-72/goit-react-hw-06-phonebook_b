@@ -27,9 +27,9 @@ const [dataLoaded, setDataLoaded] = useState(false);
     localStorage.setItem('contacts', JSON.stringify(contacts));
   }, [contacts]);
 
-   if (!dataLoaded) {
-     return null; 
-   }
+    if (!dataLoaded) {
+      return null; 
+    }
 
   const addContact = ({ name, number }) => {
     if (isDuplicate(name)) {
